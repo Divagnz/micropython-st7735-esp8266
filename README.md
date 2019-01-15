@@ -4,4 +4,4 @@
 1. Fixed SPI to always send Bytearrays
 
 ### Credits
-<a href="https://github.com/hosaka/">hosaka</a> for the initial driver
+<a href="https://github.com/hosaka/">hosaka</a> who wrote the initial driver
