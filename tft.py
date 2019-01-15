@@ -26,11 +26,9 @@ class TFT(ST7735):
 
     # ST7735 HAL
     def init(self):
-        """
-        Define your init for different display tab color versions.
-        """
-        raise NotImplementedError
-
+        self.margin_row = 0
+        self.margin_col = 0
+        self.reset()
         # self.clear()
         # self.power(True)
 
@@ -77,7 +75,7 @@ class TFT(ST7735):
         """
         self.dc.value(0)
         self.cs.value(0)
-        self.spi.write(cmd)
+        self.spi.write(bytearray([cmd]))
         self.cs.value(1)
 
     def write_data(self, data):
@@ -115,12 +113,12 @@ class TFT_GREEN(TFT):
         time.sleep_ms(10)
 
         self.write_cmd(TFT.CMD_INVCTR)
-        self.write_data(0x07)
+        self.write_data(bytearray([0x07]))
 
         self.write_cmd(TFT.CMD_PWCTR1)
         self.write_data(bytearray([0xA2, 0x02, 0x84]))
         self.write_cmd(TFT.CMD_PWCTR2)
-        self.write_data(0xC5)
+        self.write_data(bytearray([0xC5]))
         self.write_cmd(TFT.CMD_PWCTR3)
         self.write_data(bytearray([0x8A, 0x00]))
         self.write_cmd(TFT.CMD_PWCTR4)
@@ -129,14 +127,14 @@ class TFT_GREEN(TFT):
         self.write_data(bytearray([0x8A, 0xEE]))
 
         self.write_cmd(TFT.CMD_VMCTR1)
-        self.write_data(0x0E)
+        self.write_data(bytearray([0x0E]))
 
         self.write_cmd(TFT.CMD_INVOFF)
         self.write_cmd(TFT.CMD_MADCTL)
-        self.write_data(0x00) # RGB
+        self.write_data(bytearray([0x00])) # RGB
 
         self.write_cmd(TFT.CMD_COLMOD)
-        self.write_data(0x05)
+        self.write_data(bytearray([0x05]))
 
         self.write_cmd(TFT.CMD_CASET)
         self.write_data(bytearray([0x00, 0x01, 0x00, 127]))
