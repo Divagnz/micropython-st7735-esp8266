@@ -17,7 +17,7 @@ rst = Pin(5, Pin.OUT)
 spi = SPI(1, baudrate=8000000, polarity=1, phase=0)
 
 # TFT object, this is ST7735R green tab version
-tft = TFT_GREEN(128, 160, spi, dc, cs, rst, rotate=180)
+tft = TFT_GREEN(128, 160, spi, dc, cs, rst, rotate=90)
 
 # init TFT
 tft.init()
@@ -44,6 +44,10 @@ tft.text(0,0,"Test", font.terminalfont, tft.rgbcolor(0, 0, 0), 2)
 old = " "
 while True:
     d = r.recv(1024).decode("utf-8")
+    if d[0:8] == "rotation":
+        ro = int(d[9:12])
+        tft.changeRotate(ro)
+        continue
     print(d)
     tft.text(0,0,old, font.terminalfont, tft.rgbcolor(0, 0, 0), 2)
     tft.text(0,0,d, font.terminalfont, tft.rgbcolor(255, 255, 255), 2)
