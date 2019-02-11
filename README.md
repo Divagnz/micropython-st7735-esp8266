@@ -1,7 +1,7 @@
 # micropython-st7735-esp8266
 
-### Changed after Fork:
-* Fixed SPI to always send Bytearrays
+### Changelog:
+* Fixed SPI to qalways send Bytearrays
 * Added Option to rotate Display
 
 ### Rotating
