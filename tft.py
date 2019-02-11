@@ -89,7 +89,10 @@ class TFT(ST7735):
 
 class TFT_GREEN(TFT):
 
-    def __init__(self, width, height, spi, dc, cs, rst, bl=None):
+    def __init__(self, width, height, spi, dc, cs, rst, bl=None, rotate=0):
+        if rotate==90 or rotate==270:
+            height, width = width, height
+        self.rotate = rotate
         super().__init__(width, height, spi, dc, cs, rst, bl)
 
     def init(self):
@@ -155,3 +158,4 @@ class TFT_GREEN(TFT):
 
         self.write_cmd(TFT.CMD_DISPON)
         time.sleep_ms(100)
+

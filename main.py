@@ -2,7 +2,9 @@
 
 from machine import Pin, SPI
 from tft import TFT_GREEN
+gc.collect()
 import font
+import network, socket
 
 # DC       - RS/DC data/command flag
 # CS       - Chip Select, enable communication
@@ -15,13 +17,37 @@ rst = Pin(5, Pin.OUT)
 spi = SPI(1, baudrate=8000000, polarity=1, phase=0)
 
 # TFT object, this is ST7735R green tab version
-tft = TFT_GREEN(128, 160, spi, dc, cs, rst)
+tft = TFT_GREEN(128, 160, spi, dc, cs, rst, rotate=180)
 
 # init TFT
 tft.init()
 
-# start using the driver
+#Network
+sta = network.WLAN(network.STA_IF)
+ap = network.WLAN(network.AP_IF)
+sta.active(True)
+sta.connect("YOUR_SSID_HERE", "YOUR_PASSWORD_HERE")
+while not sta.isconnected():
+    pass
+print(sta.ifconfig())
+ap.active(False)
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+addr = socket.getaddrinfo("0.0.0.0", 23)[0][-1]
+s.bind(addr)
+s.listen(1)
 
 tft.clear(tft.rgbcolor(0, 0, 0)) #b, g, r
-tft.text(0,0,"Test", font.terminalfont, tft.rgbcolor(255, 255, 255), 3)
-tft.text(0,24,"Test", font.terminalfont, tft.rgbcolor(255, 255, 255), 3)
+tft.text(0,0,"Test", font.terminalfont, tft.rgbcolor(255, 255, 255), 2)
+r, a = s.accept()
+tft.text(0,0,"Test", font.terminalfont, tft.rgbcolor(0, 0, 0), 2)
+old = " "
+while True:
+    d = r.recv(1024).decode("utf-8")
+    print(d)
+    tft.text(0,0,old, font.terminalfont, tft.rgbcolor(0, 0, 0), 2)
+    tft.text(0,0,d, font.terminalfont, tft.rgbcolor(255, 255, 255), 2)
+    old = d
+
+
+#tft.pixel(127, 159, tft.rgbcolor(250,0,0))

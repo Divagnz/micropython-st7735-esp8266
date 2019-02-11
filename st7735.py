@@ -69,12 +69,33 @@ class ST7735(object):
         self.margin_row = 0
         self.margin_col = 0
 
-    def _set_window(self, x0, y0, x1, y1):
+    def _set_window(self, x0, y0, x1, y1, rotate=0):
         """
         Set window frame boundaries.
 
         Any pixels written to the display will start from this area.
         """
+        if self.rotate == 90:
+            y2 = x0
+            y3 = x1
+            x1 = self.height - 1 - y0
+            x0 = self.height - 1 - y1
+            y0 = y2
+            y1 = y3
+        if self.rotate == 270:
+            y2 = self.width - 1 - x0
+            y3 = self.width - 1 - x1
+            x0 = y0
+            x1 = y1
+            y0 = y2
+            y1 = y3
+        if self.rotate == 180:
+            x3 = x1
+            y3 = y1
+            x1 = self.width - 1 - x0
+            x0 = self.width - 1 - x3
+            y1 = self.height - 1 - y0
+            y0 = self.height - 1 - y3
         # set row XSTART/XEND
         self.write_cmd(CMD_RASET)
         self.write_data(bytearray(
@@ -89,6 +110,15 @@ class ST7735(object):
 
         # write addresses to RAM
         self.write_cmd(CMD_RAMWR)
+
+    def changeRotate(self, r):
+        if self.rotate == 270 or self.rotate == 90:
+            if r == 0 or r == 180:
+                self.height, self.width = self.width, self.height
+        else:
+            if r == 90 or r == 270:
+                self.height, self.width = self.width, self.height
+        self.rotate = r
 
     def power(self, state=None):
         """
@@ -138,7 +168,7 @@ class ST7735(object):
             w = self.width - x
         if (y + h - 1) >= self.height:
             h = self.height - y
-
+        
         self._set_window(x, y, x + w - 1, y + h - 1)
         self.write_pixels((w*h), bytearray([color >> 8, color]))
 
@@ -309,3 +339,4 @@ class ST7735(object):
         HAL: Write data to the display.
         """
         raise NotImplementedError
+
