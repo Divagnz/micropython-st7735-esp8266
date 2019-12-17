@@ -17,7 +17,7 @@ Driver and examples to ST7735s display in ESP-8266-12E [Micropython](http://micr
 | SCL | D5 (GPIO14)|
 | BLK | VCC 3V|
 
-
+![image](assets/images/ESP-8266-ST7735S.png)
 
 ### Changelog:
 * Fixed SPI to always send Bytearrays
