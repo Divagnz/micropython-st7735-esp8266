@@ -1,5 +1,24 @@
 # micropython-st7735-esp8266
 
+Driver and examples to ST7735s display in ESP-8266-12E [Micropython](http://micropython.org/), originally written by [@hosaka](https://github.com/hosaka/).
+
+### PINOUT
+
+
+
+| TFT Display | Esp-8266 |
+| :--: | :--: |
+| GND | GND|
+| VCC | VCC  3V|
+| CS | D4 (GPIO2)|
+| D/C | D2 (GPIO4)|
+| RST | D1 (GPIO5)|
+| SDA | D7 (GPIO13)|
+| SCL | D5 (GPIO14)|
+| BLK | VCC 3V|
+
+![image](assets/images/ESP-8266-ST7735S.png)
+
 ### Changelog:
 * Fixed SPI to always send Bytearrays
 * Added Option to rotate Display
